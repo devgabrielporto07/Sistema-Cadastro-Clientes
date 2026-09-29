@@ -7,7 +7,7 @@ verde = '\033[1;36m'
 magenta = '\033[1;35m'
 fim = '\033[0m'
 alunos = []
-def cadastrar_aluno():
+def cadastrar_aluno(): #função do cadastramento.
     nome = input("Digite o seu nome: ")
     idade = int(input("Digite a sua idade: "))
     curso = input("Digite o seu curso: ")
