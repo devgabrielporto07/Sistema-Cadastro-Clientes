@@ -11,6 +11,61 @@ ciano = "\033[1;36m"
 cinza = "\033[1;37m"
 reset_cor = "\033[0m"
 
+#Função de atualizar (ainda tem que ser alterardo quando for feito o cadastro):
+def atualizar_clientes (clientes, arquivos="sistema-cadastro-cliente.txt"):
+    cpf = input("Digite o cpf do cliente:").strip()
+    
+    if cpf not in clientes:
+        print("Cliente não encontrado ")
+        return False
+    
+    print(f"Cliente encontrado: {clientes[cpf]['nome']}")
+    print("Obs:Pode deixar em branco se não quiser alterar o valor atual.\n")
+    
+    novo_nome=input(f"Novo nome[{clientes[cpf]['nome']}]:").strip()
+    novo_email=input(f"Novo e-mail[{clientes[cpf]['email']}]:").strip()
+    
+    if not novo_nome:
+        novo_nome= clientes[cpf]['nome']
+    if not novo_email:
+        novo_email = clientes[cpf]['email']
+        
+    clientes[cpf]={"nome":novo_nome,"email":novo_email}
+        
+    with open(arquivos, "w", encoding="utf-8") as f:
+            for c_cpf , dados in clientes.items():
+                f.write(f"{c_cpf};{dados['nome']};{dados['email']}\n")
+    
+    
+    print("CLientes atualizado com sucesso!")
+    return True
+
+#Deleta o cliente(teste)
+def delete_cliente (clientes, arquivos="sistema-cadastro-cliente.txt"):
+    cpf = input("Digite o cpf do cliente:").strip()
+    
+    if cpf not in clientes:
+        print("Cliente não encontrado ")
+        return False
+    
+    print(f"Cliente encontrado: {clientes[cpf]['nome']}")
+    confirmacao = input("Voce tem certeza em remover: (Y/N)").strip().lower()
+    
+    if confirmacao == "N":
+     print("Remoção Cancelada!")
+     return False
+    
+    del clientes[cpf]
+        
+    
+        
+    with open(arquivos, "w", encoding="utf-8") as f:
+            for c_cpf , dados in clientes.items():
+                f.write(f"{c_cpf};{dados['nome']};{dados['email']}\n")
+    
+    
+    print("Feita a remoção com sucesso!")
+    return True
 # Definição das funções:
 def exibica_menu ():
     print ("\nInicializando Sistema....")
