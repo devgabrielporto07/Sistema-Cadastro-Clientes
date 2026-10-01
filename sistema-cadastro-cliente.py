@@ -13,6 +13,8 @@ ciano = "\033[1;36m"
 cinza = "\033[1;37m"
 reset_cor = "\033[0m"
 
+
+
 # Definição das funções:
 def exibicao_menu ():
     print ("\nInicializando Sistema....")
@@ -24,7 +26,7 @@ def exibicao_menu ():
     print (f"{amarelo}            (2)-LISTAR-CLIENTE{reset_cor}")
     print (f"{amarelo}            (3)-BUSCAR-CLIENTE{reset_cor}")
     print (f"{amarelo}            (4)-ATUALIZAR-CLIENTE{reset_cor}")
-    print (f"{amarelo}            (5)-DELETAR-ARQUIVO{reset_cor}")
+    print (f"{amarelo}            (5)-DELETAR-CLIENTE{reset_cor}")
     print (f"{cinza}            (6)-ENCERRAR{reset_cor}")
     print ("-=-"*20)
 
@@ -87,10 +89,127 @@ def cadastrar_cliente(): #Kaynan
 def buscar_aluno ():
     # Daniel
     pass
+def atualizar_cliente (arquivos="sistema-cadastro-cliente.txt"): #Pedro
+    
+    cpf = input(f"{amarelo}Digite o cpf do cliente:").strip()
+    
+    try:
+        with open(arquivos, "r", encoding="utf-8") as f:
+            linhas = f.readlines()
+    except FileNotFoundError:
+        print(f"{vermelho}Arquivo de clientes Não encontrado{reset_cor}")
+        return False
+    
+    for indice, linha in enumerate(linhas):
+        partes = linha.rstrip("\n").split(" - ")
+        
+        if len(partes) != 4:
+            continue
+        
+        numero = partes[0]
+        nome = partes[1].removeprefix("Nome do cliente: ")
+        cpf_salvo = partes[2].removeprefix("Numero do CPF: ")
+        idade = partes[3].removeprefix("Idade: ")
+        
+        if cpf_salvo == cpf :
+            print(f"{verde}Client encontrado: {nome}")
+            print(f"{cinza}Deixe em branco para manter o valor atual.")
+            
+            while True:
+                novo_nome = input(f"{amarelo}Novo nome [{nome}]: ").strip().upper()
+                
+                if not novo_nome:
+                    novo_nome = nome
+                    break
+                
+                if novo_nome == nome.strip().upper():
+                    print(f"{vermelho}O novo nome precisa ser diferente do atual.")
+                    continue
+                
+                if novo_nome.replace(" ", "").isalpha():
+                     break
+                
+                print(f"{vermelho}O nome não pode conter números ou caracteres especiais.")
+            
+            while True:
+                novo_idade = input(f"{amarelo}Nova Idade [{idade}]: ").strip().upper()
+                
+                if not novo_idade:
+                    novo_idade = idade
+                    break
+                
+                if novo_idade.isdigit() and 1 <= len(novo_idade)  <= 2:
+                    if int(novo_idade) == int(idade):
+                        print(f"{vermelho}A nova idade precisa ser diferente da atual.")
+                        continue
+                    break
+                
+                print(f"{vermelho}Digite uma idade com um ou dois dígitos.")
+                
+            if novo_nome == nome and novo_idade == idade:
+                print(f"{vermelho}Nenhum dado foi alterado.")
+                return True
+                
+            linhas[indice] = (
+                f"{numero} - Nome do cliente: {novo_nome}"
+                f" - Numero do CPF: {cpf_salvo}"
+                f" - Idade: {novo_idade}\n"
+            )
+            
+            with open(arquivos, "w", encoding="utf-8") as f :
+                f.writelines(linhas)
+                
+            print(f"{verde}Cliente  atualizado com sucesso!")
+            return True
+        
+    print(f"{vermelho}Cliente não encontrado.")
+    return False
 
-def atualizar_cliente ():
-    # Pedro
-    pass
+pass
+
+def delete_cliente ( arquivos="sistema-cadastro-cliente.txt"):#Pedro
+    cpf = input(f"{amarelo}Digite o cpf do cliente no formato 000.000.00-00:").strip()
+    
+    try:
+        with open(arquivos, "r", encoding="utf-8") as f:
+            linhas = f.readlines()
+    except FileNotFoundError:
+        print(f"{vermelho}Arquivo de cliente não encontrado.{reset_cor}")
+        return None
+    
+    for indice , linha in enumerate(linhas):
+        partes = linha.rstrip("\n").split(" - ")
+        
+        if len(partes) != 4:
+            continue
+        
+        nome = partes[1].removeprefix("Nome do Cliente: ")
+        cpf_salvo = partes[2].removeprefix("Numero do CPF: ")
+        
+        if cpf_salvo == cpf:
+            print(f"{verde}Cliente encontrado: {nome}{reset_cor}")
+            while True:
+                confirmacao = input(f"{amarelo}Deseja excluir esse cliente? (S/N): {reset_cor}").strip().upper()
+                
+                if confirmacao == "N":
+                    print(f"{cinza}Exclusão cancelada.{reset_cor}")
+                    return True
+                
+                if confirmacao == "S":
+                    break
+                
+                print(f"{vermelho}Digite apenas S ou N.{reset_cor}")
+            del linhas[indice]
+            
+            with open(arquivos,"w",encoding="utf-8") as f:
+                f.writelines(linhas)
+                
+            print(f"{verde}Cliente excluído com sucesso!{reset_cor}")
+            return True
+        
+    print(f"{vermelho}Cliente não encontrado.{reset_cor}")
+    return False
+pass
 
 def deletar_arquivo ():
     # Pedro Drops Pressão
@@ -158,7 +277,8 @@ while True:
     # Decidir usar o switch case para trocar um pouco a condicional façam o codigo de vocês dentro de cada case.    
     match escolha_usuario:
         case 1:
-            cadastrar_cliente ()
+            # Kaynan chama a função cadastrar_cliente aqui nessa linha
+            cadastrar_cliente()
             exibicao_continuar_menu ()              
         case 2:
             # Porto chama a função listar_cliente aqui nessa linha
@@ -168,9 +288,20 @@ while True:
             exibicao_continuar_menu ()
         case 4:
             # Pedro chama a função atualizar_cliente aqui nessa linha
+            while True:
+                resultado = atualizar_cliente()
+                
+                if resultado is not False:
+                    break
             exibicao_continuar_menu ()
         case 5:
-            # Pedro Drops Pressão chama a função deletar_arquivo aqui nessa linha
-            exibicao_continuar_menu ()
+          # Pedro chama a função deletar_cliente aqui nessa linha
+                     while True:
+                         resultado = delete_cliente()
+                         
+                         if resultado is not False:
+                             break
+                         
+                     exibicao_continuar_menu ()
         case 6:
             encerrar_programa ()
