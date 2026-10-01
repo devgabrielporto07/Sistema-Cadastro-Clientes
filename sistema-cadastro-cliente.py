@@ -65,7 +65,7 @@ def cadastrar_cliente(): #Kaynan
             with open("sistema-cadastro-cliente.txt", "a", encoding="utf-8") as arquivo:
                 arquivo.write(f"{cad} - Nome do cliente: {cliente} - Numero do CPF: {cpf} - Idade: {idade}\n")
             
-            sleep(3)
+            sleep(1.5)
             print(f"{verde}Cadastro realizado!{reset_cor}")
             sleep(1)
 
@@ -210,6 +210,10 @@ def delete_cliente ( arquivos="sistema-cadastro-cliente.txt"):#Pedro
     print(f"{vermelho}Cliente não encontrado.{reset_cor}")
     return False
 pass
+
+def deletar_arquivo ():
+    # Pedro Drops Pressão
+    pass
 
 def exibicao_continuar_menu():
     while True:
