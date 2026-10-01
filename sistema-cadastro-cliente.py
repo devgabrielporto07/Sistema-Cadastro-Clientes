@@ -24,7 +24,8 @@ def exibicao_menu ():
     print (f"{amarelo}            (2)-LISTAR-CLIENTE{reset_cor}")
     print (f"{amarelo}            (3)-BUSCAR-CLIENTE{reset_cor}")
     print (f"{amarelo}            (4)-ATUALIZAR-CLIENTE{reset_cor}")
-    print (f"{cinza}            (5)-ENCERRAR{reset_cor}")
+    print (f"{amarelo}            (5)-DELETAR-ARQUIVO{reset_cor}")
+    print (f"{cinza}            (6)-ENCERRAR{reset_cor}")
     print ("-=-"*20)
 
 def listar_cliente ():
@@ -62,7 +63,7 @@ def cadastrar_cliente(): #Kaynan
             with open("sistema-cadastro-cliente.txt", "a", encoding="utf-8") as arquivo:
                 arquivo.write(f"{cad} - Nome do cliente: {cliente} - Numero do CPF: {cpf} - Idade: {idade}\n")
             
-            sleep(3)
+            sleep(1.5)
             print(f"{verde}Cadastro realizado!{reset_cor}")
             sleep(1)
 
@@ -89,6 +90,10 @@ def buscar_aluno ():
 
 def atualizar_cliente ():
     # Pedro
+    pass
+
+def deletar_arquivo ():
+    # Pedro Drops Pressão
     pass
 
 def exibicao_continuar_menu():
@@ -153,7 +158,7 @@ while True:
     # Decidir usar o switch case para trocar um pouco a condicional façam o codigo de vocês dentro de cada case.    
     match escolha_usuario:
         case 1:
-            # Kaynan chama a função cadastrar_cliente aqui nessa linha
+            cadastrar_cliente ()
             exibicao_continuar_menu ()              
         case 2:
             # Porto chama a função listar_cliente aqui nessa linha
@@ -165,4 +170,7 @@ while True:
             # Pedro chama a função atualizar_cliente aqui nessa linha
             exibicao_continuar_menu ()
         case 5:
+            # Pedro Drops Pressão chama a função deletar_arquivo aqui nessa linha
+            exibicao_continuar_menu ()
+        case 6:
             encerrar_programa ()
