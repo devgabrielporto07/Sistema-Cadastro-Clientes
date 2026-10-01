@@ -2,6 +2,7 @@
 from time import sleep 
 from itertools import count
 
+import sys
 # Definição de cores da tabela ANSI:
 vermelho = "\033[1;31m"
 verde = "\033[1;32m"
@@ -13,7 +14,7 @@ cinza = "\033[1;37m"
 reset_cor = "\033[0m"
 
 # Definição das funções:
-def exibica_menu ():
+def exibicao_menu ():
     print ("\nInicializando Sistema....")
     sleep(1)
     print (f"\n{magenta}Seja bem-vindo ao sistema de cadastro de cliente segue o menu abaixo:{reset_cor}")  
@@ -90,12 +91,39 @@ def atualizar_cliente ():
     # Pedro
     pass
 
+def exibicao_continuar_menu():
+    while True:
+        try:
+            continuar_menu = int(input(f"{cinza}Você quer exibir o menu novamente? (1)-Sim (2)-Não: {reset_cor}"))
+        except ValueError:
+            print(f"{vermelho}Digite apenas os números 1 ou 2.{reset_cor}")
+            continue
+        except KeyboardInterrupt:
+            print(f"\n{vermelho}Programa interrompido pelo usuário. Saindo...{reset_cor}")
+            sys.exit()
+
+        if continuar_menu == 1:
+            exibicao_menu()
+            return continuar_menu
+        elif continuar_menu == 2:
+            print(f"{verde}Programa Finalizado!!!{reset_cor}")
+            sys.exit()
+        else:
+            print(f"{vermelho}ERROR: Opção inválida. Escolha um número entre 1 e 2.{reset_cor}")
+
+def encerrar_programa ():
+    for loop in range (5, 0, -1):
+        print (f"Encerrando em {loop}...")
+        sleep(1)
+    print (f"{verde}Programa encerrado com sucesso!!!{reset_cor}")
+    sys.exit()
 # Chamando a função menu:
 
-exibica_menu ()
+exibicao_menu ()
 
 # Variáveis de escopo global:
 escolha_usuario = None
+continuar_menu = None
 tentativas_usuario = 0
 caminho_arquivo = "sistema-cadastro-cliente.txt"
 # Estrutura de repetição para construção do código.
@@ -122,24 +150,19 @@ while True:
         if tentativas_usuario >= 3:
             print(f"{vermelho}Número máximo de tentativas excedido! Encerrando...{reset_cor}")
             break
-    # Decidir o switch case para trocar um pouco a condicional façam o codigo de vocês dentro de cada case.    
+    # Decidir usar o switch case para trocar um pouco a condicional façam o codigo de vocês dentro de cada case.    
     match escolha_usuario:
         case 1:
-            print ("Continua o codigo aqui Kaynan***")
-            break
+            # Kaynan chama a função cadastrar_cliente aqui nessa linha
+            exibicao_continuar_menu ()              
         case 2:
-            print ("Continua o codigo aqui Porto***") 
-            break
+            # Porto chama a função listar_cliente aqui nessa linha
+            exibicao_continuar_menu ()
         case 3:
-            print ("Continua o codigo aqui Daniel") 
-            break
+            # Daniel chama a função buscar_cliente aqui nessa linha
+            exibicao_continuar_menu ()
         case 4:
-            print ("Continua o codigo aqui Pedro") 
-            break
+            # Pedro chama a função atualizar_cliente aqui nessa linha
+            exibicao_continuar_menu ()
         case 5:
-            # Loop contagem regressiva + biblioteca sleep finalizando o programa.
-            for loop in range (5, 0, -1):
-                print (f"Encerrando em {loop}...")
-                sleep(1)
-            print (f"{verde}Programa encerrado com sucesso!!!{reset_cor}")
-            break
+            encerrar_programa ()
