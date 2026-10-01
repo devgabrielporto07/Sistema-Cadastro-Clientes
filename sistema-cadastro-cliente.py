@@ -1,5 +1,7 @@
 # Bibliotecas:
 from time import sleep 
+from itertools import count
+
 import sys
 # Definição de cores da tabela ANSI:
 vermelho = "\033[1;31m"
@@ -29,9 +31,57 @@ def listar_cliente ():
     # Porto
     pass
 
-def cadastrar_cliente ():
-    # Kaynan
-    pass
+def cadastrar_cliente(): #Kaynan
+    while True:
+        for cad in count(start=1, step=1):
+            while True:
+                cliente = input(f"{amarelo}Digite o nome do cliente: {reset_cor}").upper().strip()
+                sem_espaço = cliente.replace(" ", "")
+                if sem_espaço and sem_espaço.isalpha():
+                    sleep(1)
+                    break
+                else:
+                    print(f"{vermelho}Erro: O nome não pode conter números ou caracteres especiais. Tente novamente.{reset_cor}")
+            
+            while True:
+                cpf = input(f"{amarelo}Digite o seu CPF(no formato 000.000.000-00): {reset_cor}")
+                if (len(cpf) == 14 and cpf[3] == "." and cpf[7] == "." and cpf[11] == "-" and cpf.replace(".", "").replace("-", "").isdigit()):
+                    sleep(1)
+                    break
+                else:
+                    print(f"{vermelho}Erro: CPF digitado incorretamente(formato obrigatório 000.000.000-00). Tente novamente.{reset_cor}")
+            
+            while True:
+                idade = input(f"{amarelo}Digite a sua idade: {reset_cor}").strip()
+                if idade.isdigit() and 1 <= len(idade) <= 2:
+                    sleep(1)
+                    break
+                else:
+                    print(f"{vermelho}Erro: Idade digitada incorretamente. Tente novamente.{reset_cor}")
+            
+            with open("sistema-cadastro-cliente.txt", "a", encoding="utf-8") as arquivo:
+                arquivo.write(f"{cad} - Nome do cliente: {cliente} - Numero do CPF: {cpf} - Idade: {idade}\n")
+            
+            sleep(3)
+            print(f"{verde}Cadastro realizado!{reset_cor}")
+            sleep(1)
+
+            encerrar = False
+            while True: 
+                continuar = input(f"{amarelo}Deseja cadastrar outro cliente?(S/N): {reset_cor}").upper().strip()
+                if continuar == "S":
+                    sleep(1)
+                    break
+                elif continuar == "N":
+                    sleep(1)
+                    encerrar = True
+                    break
+                else:
+                    print(f"{vermelho}Erro: Comando digitado incorretamente. Tente novamente.{reset_cor}")
+            
+            if encerrar:
+                break
+        break
 
 def buscar_aluno ():
     # Daniel
