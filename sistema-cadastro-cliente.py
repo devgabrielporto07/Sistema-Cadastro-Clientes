@@ -4,7 +4,7 @@ from itertools import count
 
 import sys
 # Definição de cores da tabela ANSI:
-vermelho = "\033[1;31m"
+vermelho = "\033[31m"
 verde = "\033[1;32m"
 amarelo = "\033[1;33m"
 azul = "\033[1;34m"
@@ -86,6 +86,33 @@ def cadastrar_cliente(): #Kaynan
                 break
         break
 
+def buscar_cliente():
+    #Etapa de busca do usuário
+    termos_proibidos = ["Nome do cliente:", "Numero do CPF:", "Idade:", "cpf","nome", " "]
+    busca = input(f"{azul}Digite aqui o nome ou cpf cliente que deseja pesquisar: {reset_cor}").upper()
+
+    print(f"{ciano}Carregando...{reset_cor}")
+    sleep(1.5)
+
+    #Aqui vem uma validação do usuário para que ele não digite palavras genéricas para quebrar o programa
+    if not busca:
+        print(f"{vermelho}Erro: O campo de busca não pode ficar vazio.{reset_cor}")
+    elif busca.lower() in termos_proibidos:
+        print(f"{vermelho}Busca inválida! Não é permitido buscar pelo termo genérico '{busca}'.{reset_cor}")
+    else:
+        encontrou_algo = False
+
+    #Nessa etapa o nome buscado será exibido a linha com cada atributo do usuário
+    contador = 0
+    with open("sistema-cadastro-cliente.txt", "r", encoding="utf-8") as arquivo:
+        for linha in arquivo:
+            if busca.lower() in linha.lower():
+                print(f"{amarelo}CLIENTE: {linha.strip()}{reset_cor}")
+                contador += 1
+                return
+            
+    if contador == 0:
+        print(f"{vermelho}Nenhuma linha foi encontrada com esse nome.{reset_cor}")
 def buscar_aluno ():
     # Daniel
     pass
@@ -285,6 +312,7 @@ while True:
             exibicao_continuar_menu ()
         case 3:
             # Daniel chama a função buscar_cliente aqui nessa linha
+            buscar_cliente()
             exibicao_continuar_menu ()
         case 4:
             # Pedro chama a função atualizar_cliente aqui nessa linha
