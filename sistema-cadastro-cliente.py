@@ -107,15 +107,12 @@ def buscar_cliente():
     with open("sistema-cadastro-cliente.txt", "r", encoding="utf-8") as arquivo:
         for linha in arquivo:
             if busca.lower() in linha.lower():
-                print(f"{amarelo}CLIENTE: {linha.strip()}{reset_cor}")
+                print(f"{amarelo}CLIENTE: {linha.strip()}{reset_cor}\n")
                 contador += 1
-                return
-            
+                
     if contador == 0:
         print(f"{vermelho}Nenhuma linha foi encontrada com esse nome.{reset_cor}")
-def buscar_aluno ():
-    # Daniel
-    pass
+        
 def atualizar_cliente (arquivos="sistema-cadastro-cliente.txt"): #Pedro
     
     cpf = input(f"{amarelo}Digite o cpf do cliente:").strip()
