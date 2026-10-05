@@ -1,8 +1,8 @@
 # Bibliotecas:
 from time import sleep 
 from itertools import count
-
 import sys
+
 # Definição de cores da tabela ANSI:
 vermelho = "\033[31m"
 verde = "\033[1;32m"
@@ -17,8 +17,11 @@ reset_cor = "\033[0m"
 
 # Definição das funções:
 def exibicao_menu ():
-    print ("\nInicializando Sistema....")
+    print ("\nInicializando Sistema....\n")
     sleep(1)
+
+    print (f"{verde}Sistema Inicializado:{reset_cor}")
+
     print (f"\n{magenta}Seja bem-vindo ao sistema de cadastro de cliente segue o menu abaixo:{reset_cor}")  
     print ("-=-" * 20)
     print (f"{ciano}           SISTEMA-CADASTRO-CLIENTE 2.0 PATRÃO{reset_cor}")
@@ -30,9 +33,49 @@ def exibicao_menu ():
     print (f"{cinza}            (6)-ENCERRAR{reset_cor}")
     print ("-=-"*20)
 
-def listar_cliente ():
-    # Porto
-    pass
+def listar_cliente (): # Porto
+    clientes = []
+
+    try:
+        print (f"{ciano}Listando Clientes....{reset_cor}\n")
+        sleep (2)
+    except KeyboardInterrupt:
+            print(f"\n{vermelho}Programa interrompido pelo usuário. Saindo...{reset_cor}")
+            sys.exit()
+    try:
+        with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
+            linhas = arquivo.readlines()
+    except FileNotFoundError:
+        print(f"{vermelho}Arquivo de clientes não encontrado.{reset_cor}")
+        return
+
+    if not any(linha.strip() for linha in linhas):
+        print(f"{vermelho}O arquivo está vazio. Ainda não há clientes cadastrados.{reset_cor}")
+        return
+
+    for linha in linhas:
+        leitura_linha = linha.strip().split(" - ")
+
+        if len(leitura_linha) == 4:
+            cliente = {
+                "numero": leitura_linha[0],
+                "nome": leitura_linha[1].removeprefix("Nome do cliente: "),
+                "cpf": leitura_linha[2].removeprefix("Numero do CPF: "),
+                "idade": leitura_linha[3].removeprefix("Idade: "),
+            }
+            clientes.append(cliente)
+
+    if not clientes:
+        print(f"{amarelo}Não foram encontrados cadastros válidos no arquivo.{reset_cor}")
+        return
+
+    for cliente in clientes:
+        print (
+        f"{verde}Cliente {cliente['numero']}: {cliente['nome']} {reset_cor}| "
+        f"{vermelho}CPF: {cliente['cpf']} {reset_cor}|{amarelo} Idade: {cliente['idade']} anos{reset_cor}"
+        )
+
+    return clientes
 
 def cadastrar_cliente(): #Kaynan
     while True:
@@ -86,7 +129,7 @@ def cadastrar_cliente(): #Kaynan
                 break
         break
 
-def buscar_cliente():
+def buscar_cliente(): # Daniel
     #Etapa de busca do usuário
     termos_proibidos = ["Nome do cliente:", "Numero do CPF:", "Idade:", "cpf","nome", " "]
     busca = input(f"{azul}Digite aqui o nome ou cpf cliente que deseja pesquisar: {reset_cor}").upper()
@@ -189,9 +232,7 @@ def atualizar_cliente (arquivos="sistema-cadastro-cliente.txt"): #Pedro
     print(f"{vermelho}Cliente não encontrado.")
     return False
 
-pass
-
-def delete_cliente ( arquivos="sistema-cadastro-cliente.txt"):#Pedro
+def delete_cliente ( arquivos="sistema-cadastro-cliente.txt"): #Pedro
     cpf = input(f"{amarelo}Digite o cpf do cliente no formato 000.000.00-00:").strip()
     
     try:
@@ -201,7 +242,7 @@ def delete_cliente ( arquivos="sistema-cadastro-cliente.txt"):#Pedro
         print(f"{vermelho}Arquivo de cliente não encontrado.{reset_cor}")
         return None
     
-    for indice , linha in enumerate(linhas):
+    for indice, linha in enumerate(linhas):
         partes = linha.rstrip("\n").split(" - ")
         
         if len(partes) != 4:
@@ -233,13 +274,8 @@ def delete_cliente ( arquivos="sistema-cadastro-cliente.txt"):#Pedro
         
     print(f"{vermelho}Cliente não encontrado.{reset_cor}")
     return False
-pass
 
-def deletar_arquivo ():
-    # Pedro Drops Pressão
-    pass
-
-def exibicao_continuar_menu():
+def exibicao_continuar_menu(): # Porto
     while True:
         try:
             continuar_menu = int(input(f"{cinza}Você quer exibir o menu novamente? (1)-Sim (2)-Não: {reset_cor}"))
@@ -259,14 +295,14 @@ def exibicao_continuar_menu():
         else:
             print(f"{vermelho}ERROR: Opção inválida. Escolha um número entre 1 e 2.{reset_cor}")
 
-def encerrar_programa ():
+def encerrar_programa (): # Porto
     for loop in range (5, 0, -1):
         print (f"Encerrando em {loop}...")
         sleep(1)
     print (f"{verde}Programa encerrado com sucesso!!!{reset_cor}")
     sys.exit()
-# Chamando a função menu:
 
+# Chamando a função menu:
 exibicao_menu ()
 
 # Variáveis de escopo global:
@@ -274,13 +310,14 @@ escolha_usuario = None
 continuar_menu = None
 tentativas_usuario = 0
 caminho_arquivo = "sistema-cadastro-cliente.txt"
+
 # Estrutura de repetição para construção do código.
 
 while True:
 
     try:
         escolha_usuario = int(input("Escolha uma das opções acima: "))
-        if escolha_usuario in range (1, 6, +1):
+        if escolha_usuario in range (1, 7, +1):
             pass # Comando pass serve apenas para continuar o codigo
         else:
             print (f"{vermelho}ERROR: Opção inválida. Escolha um número de 1 a 5.{reset_cor}")
@@ -293,7 +330,7 @@ while True:
         break
 
     # Ideia para caso o usuario repita o erro tenha o numeros de tentativas excedida o programa se encerra.
-    if escolha_usuario != 1 and escolha_usuario != 2 and escolha_usuario != 3 and escolha_usuario != 4 and escolha_usuario != 5:
+    if escolha_usuario != 1 and escolha_usuario != 2 and escolha_usuario != 3 and escolha_usuario != 4 and escolha_usuario != 5 and escolha_usuario != 6:
         tentativas_usuario += 1
         if tentativas_usuario >= 3:
             print(f"{vermelho}Número máximo de tentativas excedido! Encerrando...{reset_cor}")
@@ -301,18 +338,15 @@ while True:
     # Decidir usar o switch case para trocar um pouco a condicional façam o codigo de vocês dentro de cada case.    
     match escolha_usuario:
         case 1:
-            # Kaynan chama a função cadastrar_cliente aqui nessa linha
             cadastrar_cliente()
             exibicao_continuar_menu ()              
         case 2:
-            # Porto chama a função listar_cliente aqui nessa linha
+            listar_cliente ()
             exibicao_continuar_menu ()
         case 3:
-            # Daniel chama a função buscar_cliente aqui nessa linha
             buscar_cliente()
             exibicao_continuar_menu ()
         case 4:
-            # Pedro chama a função atualizar_cliente aqui nessa linha
             while True:
                 resultado = atualizar_cliente()
                 
@@ -320,13 +354,12 @@ while True:
                     break
             exibicao_continuar_menu ()
         case 5:
-          # Pedro chama a função deletar_cliente aqui nessa linha
-                     while True:
-                         resultado = delete_cliente()
+             while True:
+                resultado = delete_cliente()
                          
-                         if resultado is not False:
-                             break
+                if resultado is not False:
+                    break
                          
-                     exibicao_continuar_menu ()
+             exibicao_continuar_menu ()
         case 6:
             encerrar_programa ()
