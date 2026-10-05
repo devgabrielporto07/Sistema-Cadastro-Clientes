@@ -126,6 +126,7 @@ while True:
     match escolha_usuario:
         case 1:
             print ("Continua o codigo aqui Kaynan***")
+            cadastrar_cliente()
             break
         case 2:
             print ("Continua o codigo aqui Porto***") 
