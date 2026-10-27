@@ -78,54 +78,54 @@ def listar_cliente (): # Porto
     return clientes
 
 def cadastrar_cliente(): #Kaynan
-    while True:
-        for cad in count(start=1, step=1):
-            while True:
+    while True: # Loop principal do programa
+        for cad in count(start=0, step=1): # Contador para numerar os cadastros
+            while True: # Loop para pedir e validar o nome
                 cliente = input(f"{amarelo}Digite o nome do cliente: {reset_cor}").upper().strip()
                 sem_espaço = cliente.replace(" ", "")
-                if sem_espaço and sem_espaço.isalpha():
+                if sem_espaço and sem_espaço.isalpha(): # Verifica se tem apenas letras
                     sleep(1)
                     break
                 else:
                     print(f"{vermelho}Erro: O nome não pode conter números ou caracteres especiais. Tente novamente.{reset_cor}")
             
-            while True:
+            while True: # Loop para pedir e validar o CPF
                 cpf = input(f"{amarelo}Digite o seu CPF(no formato 000.000.000-00): {reset_cor}")
-                if (len(cpf) == 14 and cpf[3] == "." and cpf[7] == "." and cpf[11] == "-" and cpf.replace(".", "").replace("-", "").isdigit()):
+                if (len(cpf) == 14 and cpf[3] == "." and cpf[7] == "." and cpf[11] == "-" and cpf.replace(".", "").replace("-", "").isdigit()): # Verifica se o formato está correto
                     sleep(1)
                     break
                 else:
                     print(f"{vermelho}Erro: CPF digitado incorretamente(formato obrigatório 000.000.000-00). Tente novamente.{reset_cor}")
             
-            while True:
+            while True: # Loop para pedir e validar a idade
                 idade = input(f"{amarelo}Digite a sua idade: {reset_cor}").strip()
-                if idade.isdigit() and 1 <= len(idade) <= 2:
+                if idade.isdigit() and 1 <= len(idade) <= 2: # Verifica se é número válido
                     sleep(1)
                     break
                 else:
                     print(f"{vermelho}Erro: Idade digitada incorretamente. Tente novamente.{reset_cor}")
             
             with open("sistema-cadastro-cliente.txt", "a", encoding="utf-8") as arquivo:
-                arquivo.write(f"{cad} - Nome do cliente: {cliente} - Numero do CPF: {cpf} - Idade: {idade}\n")
+                arquivo.write(f"{cad + 1} - Nome do cliente: {cliente} - Numero do CPF: {cpf} - Idade: {idade}\n") # Abre o arquivo para salvar
             
             sleep(1.5)
             print(f"{verde}Cadastro realizado!{reset_cor}")
             sleep(1)
 
             encerrar = False
-            while True: 
+            while True: # Loop para perguntar se quer continuar
                 continuar = input(f"{amarelo}Deseja cadastrar outro cliente?(S/N): {reset_cor}").upper().strip()
                 if continuar == "S":
                     sleep(1)
                     break
                 elif continuar == "N":
                     sleep(1)
-                    encerrar = True
+                    encerrar = True # Define sinal para parar o programa
                     break
                 else:
                     print(f"{vermelho}Erro: Comando digitado incorretamente. Tente novamente.{reset_cor}")
             
-            if encerrar:
+            if encerrar: # Se escolheu N, ele quebra o loop geral
                 break
         break
 
@@ -340,9 +340,6 @@ while True:
         case 1:
             cadastrar_cliente()
             exibicao_continuar_menu ()              
-            print ("Continua o codigo aqui Kaynan***")
-            cadastrar_cliente()
-            break
         case 2:
             listar_cliente ()
             exibicao_continuar_menu ()
